@@ -2,6 +2,7 @@ import { View, Text, SafeAreaView, TextInput, Pressable } from "react-native";
 import React, { useState, useLayoutEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { styles } from "../utils/styles";
+import socket from "../utils/socket";
 
 const AddProduct = ({ navigation }) => {
     const [name, setName] = useState("");
@@ -27,6 +28,7 @@ const AddProduct = ({ navigation }) => {
     const addProduct = () => {
         if (name.trim() && price.trim() && url.trim()) {
             console.log({ name, price, url, user });
+            socket.emit("addProduct",{name,price,url,user});
             navigation.navigate("BidPage");
         }
     };

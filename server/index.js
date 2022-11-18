@@ -13,8 +13,22 @@ const socketIO = require('socket.io')(http, {
     }
 });
 
+const generateID=()=>Math.random().toString(36).substring(2,10);
+let productList=[];
+
 socketIO.on('connection', (socket) => {
     console.log(`⚡: ${socket.id} user just connected!`);
+
+    socket.on("addProduct",(product)=>{
+        productList.unshift({
+            id:generateID(),
+            name:product.name,
+            price:product.price,
+            image_url:product.url,
+            owner:product.user
+        })
+        socket.emit("getProduct",productList);
+    })
 
     socket.on('disconnect', () => {
       socket.disconnect()
