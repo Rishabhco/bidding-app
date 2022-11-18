@@ -18,7 +18,7 @@ const ProductUI = ({ toggleModal, name, image_url, price, id }) => {
                     <Text style={styles.productPrice}>Current Price: ${price}</Text>
                 </View>
 
-                <Button title='Place Bid' onPress={toggleModal} />
+                <Button title='Place Bid' onPress={toggleModal(name,price,id)} />
             </View>
         </View>
     );

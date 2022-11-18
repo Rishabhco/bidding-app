@@ -30,6 +30,15 @@ socketIO.on('connection', (socket) => {
         socket.emit("getProducts",productList);
     })
 
+    socket.on("updatePrice",(data)=>{
+        let result=productList.filter(
+            (product)=>product.id===data.selectedProduct.id
+        );
+        result[0].price=data.newPrice;
+        result[0].owner=data.user;
+        socket.emit("getProducts",productList);
+    })
+
     socket.on('disconnect', () => {
       socket.disconnect()
       console.log('🔥: A user disconnected');

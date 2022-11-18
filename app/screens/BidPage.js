@@ -16,8 +16,12 @@ import socket from "../utils/socket";
 const BidPage = ({ navigation }) => {
     const [visible, setVisible] = useState(false);
     const [products,setProducts]=useState([]);
+    const [selectedProduct, setSelectedProduct] = useState({});
 
-    const toggleModal = () => setVisible(!visible);
+    const toggleModal = (name, price, id) => {
+        setVisible(true);
+        setSelectedProduct({ name, price, id });
+    };
 
     useLayoutEffect=(()=>{
         function fetchProducts(){
@@ -57,7 +61,7 @@ const BidPage = ({ navigation }) => {
                     )}
                 />
             </View>
-            {visible ? <Modal visible={visible} setVisible={setVisible} /> : ""}
+            {visible ? (<Modal visible={visible} setVisible={setVisible} selectedProduct={selectedProduct} /> ): ("")}
         </SafeAreaView>
     );
 };
