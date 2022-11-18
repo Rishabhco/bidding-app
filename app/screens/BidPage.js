@@ -6,7 +6,7 @@ import {
     Button,
     FlatList,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect,useState } from "react";
 import Modal from "./Modal";
 import ProductUI from "./ProductUI";
 import {styles} from "../utils/styles";
@@ -23,7 +23,7 @@ const BidPage = ({ navigation }) => {
         setSelectedProduct({ name, price, id });
     };
 
-    useLayoutEffect=(()=>{
+    useLayoutEffect(()=>{
         function fetchProducts(){
             fetch("http://localhost:4000/products")
             .then((res)=>res.json())
@@ -34,7 +34,7 @@ const BidPage = ({ navigation }) => {
     },[]);
 
     useEffect(()=>{
-        socket.on("getProducts",(data)=>setProducts(data));
+        socket.on("getProducts",(data)=>{console.log(data);setProducts(data)});
     },[socket]);
 
     return (
@@ -50,7 +50,7 @@ const BidPage = ({ navigation }) => {
             </View>
 
             <View style={styles.mainContainer}>
-                <FlatList data={products} key={(item)=>item.id} renderIte={({item})=>(
+                <FlatList data={products} key={(item)=>item.id} renderItem={({item})=>(
                     <ProductUI 
                         name={item.name} 
                         image_url={item.image_url} 
