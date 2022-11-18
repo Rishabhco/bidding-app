@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet, TextInput, Pressable } from "react-native";
+import { View, Text, TextInput, Pressable } from "react-native";
+import {styles} from "../utils/styles";
 import React, { useState } from "react";
 
 const Modal = ({ visible, setVisible }) => {

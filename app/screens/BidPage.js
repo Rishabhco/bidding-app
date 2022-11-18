@@ -3,11 +3,11 @@ import {
     Text,
     SafeAreaView,
     Image,
-    StyleSheet,
     Button,
 } from "react-native";
 import React, { useState } from "react";
 import Modal from "./Modal";
+import {styles} from "../utils/styles";
 import { Entypo } from "@expo/vector-icons";
 
 const BidPage = ({ navigation }) => {
