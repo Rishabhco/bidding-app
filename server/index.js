@@ -27,7 +27,7 @@ socketIO.on('connection', (socket) => {
             image_url:product.url,
             owner:product.user
         })
-        socket.emit("getProduct",productList);
+        socket.emit("getProducts",productList);
     })
 
     socket.on('disconnect', () => {
@@ -40,6 +40,10 @@ app.get("/",(req,res)=>{
     res.json({
         msg:"Hello World!!"
     });
+})
+
+app.get("/products",(req,res)=>{
+    res.json(productList);
 })
 
 app.listen(PORT,()=>{

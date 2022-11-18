@@ -4,16 +4,34 @@ import {
     SafeAreaView,
     Image,
     Button,
+    FlatList,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "./Modal";
+import ProductUI from "./ProductUI";
 import {styles} from "../utils/styles";
 import { Entypo } from "@expo/vector-icons";
+import socket from "../utils/socket";
 
 const BidPage = ({ navigation }) => {
     const [visible, setVisible] = useState(false);
+    const [products,setProducts]=useState([]);
 
     const toggleModal = () => setVisible(!visible);
+
+    useLayoutEffect=(()=>{
+        function fetchProducts(){
+            fetch("http://localhost:4000/products")
+            .then((res)=>res.json())
+            .then((data)=>setProducts(data))
+            .catch((err)=>console.log(err));
+        }
+        fetchProducts();
+    },[]);
+
+    useEffect(()=>{
+        socket.on("getProducts",(data)=>setProducts(data));
+    },[socket]);
 
     return (
         <SafeAreaView style={styles.bidContainer}>
@@ -28,23 +46,16 @@ const BidPage = ({ navigation }) => {
             </View>
 
             <View style={styles.mainContainer}>
-                <View style={styles.productContainer}>
-                    <Image
-                        style={styles.image}
-                        resizeMode='contain'
-                        source={{
-                            uri: "https://stimg.cardekho.com/images/carexteriorimages/930x620/Tesla/Model-S/5252/1611840999494/front-left-side-47.jpg?tr=w-375",
-                        }}
+                <FlatList data={products} key={(item)=>item.id} renderIte={({item})=>(
+                    <ProductUI 
+                        name={item.name} 
+                        image_url={item.image_url} 
+                        price={item.price} 
+                        toggleModal={toggleModal} 
+                        id={item.id}
                     />
-                    <View style={styles.productDetails}>
-                        <Text style={styles.productName}>Tesla Model S</Text>
-                        <View>
-                            <Text style={styles.productPrice}>Current Price: $40000</Text>
-                        </View>
-
-                        <Button title='Place Bid' onPress={toggleModal} />
-                    </View>
-                </View>
+                    )}
+                />
             </View>
             {visible ? <Modal visible={visible} setVisible={setVisible} /> : ""}
         </SafeAreaView>
